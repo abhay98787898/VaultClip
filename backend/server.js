@@ -109,7 +109,7 @@ app.post('/api/receive', async (req, res) => {
             type: clip.type,
             textData: clip.textData,
             fileName: clip.fileName,
-            fileUrl: clip.type === 'file' ? `https://vaultclip-backend.onrender.com/${clip.pin}` : null,
+            fileUrl: clip.type === 'file' ? `https://vaultclip-backend.onrender.com/api/download-file/${clip.pin}` : null,
             expiryMode: clip.expiryMode, // timer
             createdAt: clip.createdAt    // timer calculate
         });
