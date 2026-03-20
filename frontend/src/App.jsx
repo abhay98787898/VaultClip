@@ -125,7 +125,7 @@ function App() {
       if (sendMode === 'text') { formData.append('textData', textData); }
       else { formData.append('file', file); }
 
-      const response = await fetch('http://localhost:5000/api/send', { method: 'POST', body: formData });
+      const response = await fetch('https://vaultclip-backend.onrender.com/api/send', { method: 'POST', body: formData });
       const data = await response.json();
 
       clearInterval(progressInterval); setUploadProgress(100);
@@ -156,7 +156,7 @@ function App() {
 
     try {
       setErrorMessage(''); setIsUploading(true); setUploadProgress(40);
-      const response = await fetch('http://localhost:5000/api/receive', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: pin, password: unlockPassword }) });
+      const response = await fetch('https://vaultclip-backend.onrender.com/api/receive', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: pin, password: unlockPassword }) });
       const data = await response.json();
       setUploadProgress(100);
 
@@ -175,7 +175,7 @@ function App() {
   const handleProcessWithAI = async () => {
     try {
       setIsAiLoading(true);
-      const response = await fetch('http://localhost:5000/api/process-with-ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ textData: receivedData.text }) });
+      const response = await fetch('https://vaultclip-backend.onrender.com/api/process-with-ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ textData: receivedData.text }) });
       const data = await response.json();
       if (response.ok) { setAiResult(data.aiResult); showToast("✨ AI Magic Complete!"); } else { showToast("❌ AI Error: " + data.error); }
     } catch (error) { showToast("❌ Failed to reach AI."); } finally { setIsAiLoading(false); }
@@ -185,7 +185,7 @@ function App() {
   const handleOCR = async () => {
     try {
       setIsAiLoading(true);
-      const response = await fetch(`http://localhost:5000/api/ocr/${receivedData.originalPin}`);
+      const response = await fetch(`https://vaultclip-backend.onrender.com/api/ocr/${receivedData.originalPin}`);
       const data = await response.json();
       if (response.ok) { setAiResult(data.extractedText); showToast("🪄 Text Extracted Successfully!"); } else { showToast("❌ OCR Error: " + data.error); }
     } catch (error) { showToast("❌ Failed to process Image."); } finally { setIsAiLoading(false); }
