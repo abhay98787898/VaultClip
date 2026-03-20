@@ -109,9 +109,9 @@ app.post('/api/receive', async (req, res) => {
             type: clip.type,
             textData: clip.textData,
             fileName: clip.fileName,
-            fileUrl: clip.type === 'file' ? `http://localhost:5000/api/download-file/${clip.pin}` : null,
-            expiryMode: clip.expiryMode, // NEW: Bheja taaki timer chal sake
-            createdAt: clip.createdAt    // NEW: Bheja taaki timer calculate ho
+            fileUrl: clip.type === 'file' ? `${req.protocol}://${req.get('host')}/api/download-file/${clip.pin}` : null,
+            expiryMode: clip.expiryMode, // timer
+            createdAt: clip.createdAt    // timer calculate
         });
 
         if (clip.expiryMode === "burn" && clip.type === 'text') {
@@ -191,7 +191,7 @@ app.get('/api/ocr/:pin', async (req, res) => {
         const filePath = path.join(__dirname, 'uploads', clip.savedFileName);
         if (!fs.existsSync(filePath)) return res.status(404).json({ error: "Image file is missing." });
 
-        // Image ko Gemini ke samajhne layk format (Base64) mein convert karna
+        // Convert the image into a format (Base64) that Gemini can understand.
         const mimeType = clip.savedFileName.toLowerCase().endsWith('png') ? 'image/png' : 'image/jpeg';
         const imagePart = {
             inlineData: {
