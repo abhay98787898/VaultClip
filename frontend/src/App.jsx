@@ -38,6 +38,17 @@ function App() {
   const fileInputRef = useRef(null);
   const triggerFileInput = () => fileInputRef.current.click();
 
+  // --- NEW: INVISIBLE WAKE-UP CALL TO RENDER SERVER ---
+  useEffect(() => {
+    const renderUrl = "https://vaultclip-backend.onrender.com"; 
+    
+    // Silently ping the backend as soon as the page loads.
+    fetch(`${renderUrl}/api/wakeup`)
+      .then(res => res.json())
+      .then(data => console.log(data.message))
+      .catch(err => console.log("Wake-up call sent, server is waking up..."));
+  }, []); // An empty array means this will run only once when the website loads.
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const pinFromUrl = urlParams.get('pin');

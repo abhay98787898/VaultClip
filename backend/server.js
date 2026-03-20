@@ -65,6 +65,12 @@ const generateUniquePin = async () => {
 
 // --- API ROUTES ---
 
+// --- NEW: INVISIBLE WAKE-UP ROUTE ---
+app.get('/api/wakeup', (req, res) => {
+    console.log("⏰ Wake-up call received from frontend!");
+    res.status(200).json({ message: "Server is awake and ready! 🚀" });
+});
+
 // 1. SEND API
 app.post('/api/send', upload.single('file'), async (req, res) => {
     try {
